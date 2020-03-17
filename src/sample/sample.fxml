@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <TextField fx:id="Username" layoutX="306.0" layoutY="282.0" prefHeight="49.0" prefWidth="400.0" />
+      <TextField fx:id="password" layoutX="306.0" layoutY="395.0" prefHeight="49.0" prefWidth="400.0" />
+      <Button fx:id="Login" layoutX="415.0" layoutY="579.0" mnemonicParsing="false" onAction="#Connexion" prefHeight="49.0" prefWidth="182.0" text="Se connecter">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="306.0" layoutY="93.0" prefHeight="68.0" prefWidth="400.0" text="       Connexion " textAlignment="CENTER">
+         <font>
+            <Font size="44.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="289.0" prefHeight="36.0" prefWidth="220.0" text="Nom d'utilisateur:" textAlignment="CENTER">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="402.0" prefHeight="36.0" prefWidth="220.0" text="Mot de passe:" textAlignment="CENTER">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
