@@ -1,4 +1,4 @@
-package sample;
+package sample.Controlers;
 
 public class ConfirmationChoix {
 }

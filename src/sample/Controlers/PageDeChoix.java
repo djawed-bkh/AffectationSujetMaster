@@ -1,4 +1,4 @@
-package sample;
+package sample.Controlers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,15 +28,12 @@ public class PageDeChoix {
     private TableColumn<?, ?> NumeroSujet;
 
     @FXML
-    void AffecterSujet(ActionEvent event) throws IOException {
+    private TableView<?> Tableau;
 
-        ((Node) (event.getSource())).getScene().getWindow().hide();
-        Parent root = FXMLLoader.load(getClass().getResource("/sample/ConfirmationChoix.fxml"));
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Employes");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
-        primaryStage.show();
+    @FXML
+    void AffecterSujet(ActionEvent event) {
+
     }
+
 
 }

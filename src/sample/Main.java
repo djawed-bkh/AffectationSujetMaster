@@ -7,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 //librairies de Mysql
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.*;
-
 
 
 public class Main extends Application {
@@ -21,33 +19,34 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         //partie MYSQL
-        try{
+        try {
 
-           Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/webService","root","djawed");    //3306
+           /* Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/webService", "root", "djawed");    //3306
 
-            System.out.println("ça marche");
-            Statement stmt=con.createStatement();
+*/
 
 
-            //test
+            /*//test
+              Statement stmt = con.createStatement();
             ResultSet rs=stmt.executeQuery("select * from Etudiant");
             while(rs.next())
                 System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
             //test
-            con.close();
+            con.close();*/
 
 
-        }catch(Exception e){ System.out.println(e + "   Probleme de connexion a la base ");}
-    //partie JAVAFX
-
-       /* Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        } catch (Exception e) {
+            System.out.println(e + "   Probleme de connexion a la base ");
+        }
+        //partie JAVAFX
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/sample.fxml"));
         primaryStage.setTitle("Acceuil");
         primaryStage.setScene(new Scene(root));
-        primaryStage.show();*/
+        primaryStage.show();
     }
 
 
