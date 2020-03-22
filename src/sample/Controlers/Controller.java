@@ -18,6 +18,8 @@ import java.sql.*;
 
 public class Controller {
 
+    public static int ID;
+    public static String Nom;
 
     @FXML
     private PasswordField password;
@@ -41,7 +43,7 @@ public class Controller {
                     "jdbc:mysql://localhost:3306/webService", "root", "djawed");
 
 
-            String sqlQuery = " select password from Etudiant where username =?";
+            String sqlQuery = " select password,EtudiantID,Etudiant.Nom from Etudiant where username =?";
             PreparedStatement prepStmt = con.prepareStatement(sqlQuery);
             prepStmt.setString(1, Username.getText());
             ResultSet rs = prepStmt.executeQuery();
@@ -50,7 +52,8 @@ public class Controller {
                 Username.setText("");
                 password.setText("");
             } else {
-
+                    ID=rs.getInt("EtudiantID");
+                    Nom=rs.getString("Nom");
                 if (rs.getString("password").equals(password.getText())) {
 
                     ((Node) (event.getSource())).getScene().getWindow().hide();
