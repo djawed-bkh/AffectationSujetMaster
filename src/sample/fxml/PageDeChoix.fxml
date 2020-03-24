@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -8,13 +9,25 @@
 
 <AnchorPane prefHeight="741.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controlers.PageDeChoix">
    <children>
-      <TableView fx:id="Tableau" layoutX="65.0" layoutY="145.0" prefHeight="449.0" prefWidth="909.0">
+      <TableView fx:id="Tableau" layoutX="131.0" layoutY="28.0" prefHeight="449.0" prefWidth="909.0">
         <columns>
           <TableColumn fx:id="NumeroSujet" prefWidth="91.0" text="Num sujet" />
           <TableColumn fx:id="EnonceSujet" minWidth="0.0" prefWidth="678.0" text="Enoncé sujet" />
             <TableColumn fx:id="NomEncadreur" prefWidth="137.0" text="Nom Encadreur" />
         </columns>
       </TableView>
-      <Button fx:id="Suivant" layoutX="965.0" layoutY="644.0" mnemonicParsing="false" onAction="#AffecterSujet" prefHeight="55.0" prefWidth="152.0" text="Suivant" />
+      <Button fx:id="Suivant" layoutX="892.0" layoutY="644.0" mnemonicParsing="false" onAction="#AffecterSujet" prefHeight="55.0" prefWidth="225.0" text="Suivant">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Label fx:id="Sujet" layoutX="47.0" layoutY="506.0" prefHeight="101.0" prefWidth="772.0">
+         <font>
+            <Font size="22.0" />
+         </font></Label>
+      <Label fx:id="Disponibilite" layoutX="937.0" layoutY="524.0" prefHeight="65.0" prefWidth="168.0" textAlignment="JUSTIFY" textFill="RED">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -20,6 +20,11 @@ public class Controller {
 
     public static int ID;
     public static String Nom;
+    public static String prenom;
+    public static String dateLieuNaissance;
+    public static String parcours;
+    public static float MoyenneCursus;
+    public static float MoyenneUF;
 
     @FXML
     private PasswordField password;
@@ -43,7 +48,7 @@ public class Controller {
                     "jdbc:mysql://localhost:3306/webService", "root", "djawed");
 
 
-            String sqlQuery = " select password,EtudiantID,Etudiant.Nom from Etudiant where username =?";
+            String sqlQuery = " select password,EtudiantID,Etudiant.MoyenneCursus,Etudiant.MoyenneUF,Etudiant.Prenom,Etudiant.Nom, Etudiant.DateLieuNaissance,Etudiant.parcours from Etudiant where username =?";
             PreparedStatement prepStmt = con.prepareStatement(sqlQuery);
             prepStmt.setString(1, Username.getText());
             ResultSet rs = prepStmt.executeQuery();
@@ -54,6 +59,11 @@ public class Controller {
             } else {
                     ID=rs.getInt("EtudiantID");
                     Nom=rs.getString("Nom");
+                    prenom=rs.getString("Prenom");
+                    dateLieuNaissance=rs.getString("DateLieuNaissance");
+                    parcours=rs.getString("parcours");
+                    MoyenneCursus=rs.getFloat("MoyenneCursus");
+                    MoyenneUF=rs.getFloat("MoyenneUF");
                 if (rs.getString("password").equals(password.getText())) {
 
                     ((Node) (event.getSource())).getScene().getWindow().hide();

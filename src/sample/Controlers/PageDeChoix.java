@@ -4,15 +4,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import sample.Classes.Sujet;
 
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -21,8 +29,19 @@ import java.util.ResourceBundle;
 
 public class PageDeChoix implements Initializable {
 
+
+    public static int NSujet;
+    public static int IdAutreEtudiant;// id de l'étudiant dont on va desafecter le sujet
+    public static String Enoncer;
+    public static String ProfEncadreur;
+
+
     @FXML
     private Button Suivant;
+    @FXML
+    private Label Sujet;
+    @FXML
+    private Label Disponibilite;
 
     @FXML
     private TableColumn<Sujet, String> EnonceSujet;
@@ -38,7 +57,34 @@ public class PageDeChoix implements Initializable {
     private ObservableList<Sujet> data=FXCollections.observableArrayList();
 
     @FXML
-    void AffecterSujet(ActionEvent event) {}
+    void AffecterSujet(ActionEvent event) throws IOException {                  //bouton suivant
+
+        if (Disponibilite.getText()=="Disponible"){
+
+
+
+
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample/fxml/ConfirmationChoix.fxml"));
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Choix du projet");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.setResizable(false);
+            primaryStage.show();
+
+
+
+
+        }else {
+                        // fenetre dialogue   after
+        }
+
+
+
+
+
+
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +96,7 @@ public class PageDeChoix implements Initializable {
 
 
     }
-    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());            //format date
+
 
 
     public void FillingTableView(){
@@ -79,7 +125,9 @@ public class PageDeChoix implements Initializable {
                 NumeroSujet.setCellValueFactory(new PropertyValueFactory<>("IDSujet"));
                 NomEncadreur.setCellValueFactory(new PropertyValueFactory<>("NomProffesseur"));
                 Tableau.setItems(data);
+
             }
+            con.close();
         } catch (Exception e) {
             System.out.println(e + "  Probleme f Page de choix ");
         }
@@ -88,15 +136,119 @@ public class PageDeChoix implements Initializable {
 
     }
 
+
+
+
+
     public void ListnerSelectedRow(){
-        Tableau.setOnMouseClicked((MouseEvent event) -> {
+        Tableau.setOnMouseClicked((MouseEvent event) -> {                               // listner de selection d'une ligne dans le tableview
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 int index = Tableau.getSelectionModel().getSelectedIndex();
-                Tableau.getItems().get(index).getEnoncerSujet();
+                Sujet.setText( Tableau.getItems().get(index).getEnoncerSujet());
+                NSujet=Tableau.getItems().get(index).getIDSujet();
+                Enoncer=Tableau.getItems().get(index).getEnoncerSujet();
+                ProfEncadreur=Tableau.getItems().get(index).getNomProffesseur();
+
+
+
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con = DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/webService", "root", "djawed");
+
+
+                    String sqlQuery = "SELECT Etudiant.MoyenneCursus,Etudiant.EtudiantID,Etudiant.MoyenneUF,Etudiant.DateAttribution from Etudiant where SujetID=?";
+                    PreparedStatement prepStmt = con.prepareStatement(sqlQuery);
+                    prepStmt.setInt(1, NSujet);
+                    ResultSet rs = prepStmt.executeQuery();
+
+
+
+
+                    if (rs.next()){   //sujet affecter
+                        if (Controller.MoyenneCursus<rs.getFloat("MoyenneCursus")){      // Moyenne cursus :doit choisir un autre sujet dispo
+                            Disponibilite.setText("Indisponible");
+                            IdAutreEtudiant=-1;
+                        }
+
+
+
+
+                        else if (Controller.MoyenneCursus>rs.getFloat("MoyenneCursus")){    //  Moyenne cursus :permuter de destinataire
+                                            IdAutreEtudiant=rs.getInt("Etudiant.EtudiantID");
+                                            Disponibilite.setText("Disponible");
+
+
+
+
+                        }else {                                                                           // cas d'égalité on compare les moyenne des unités fondamentales
+
+                            if (Controller.MoyenneUF<rs.getFloat("MoyenneUF")){      //   d'apres la moyenne UF   doit choisir un autre sujet dispo
+                                Disponibilite.setText("Indisponible");
+                                IdAutreEtudiant=-1;
+
+
+
+
+                            }else if (Controller.MoyenneUF>rs.getFloat("MoyenneUF")){
+
+                                IdAutreEtudiant=rs.getInt("Etudiant.EtudiantID");
+                                Disponibilite.setText("Disponible");
+
+
+
+                            }
+
+
+                        }
+
+
+
+
+
+                    }else{
+                        Disponibilite.setText("Disponible");
+
+                    }
+
+
+
+
+
+                    con.close();
+                } catch (Exception e) {
+                    System.out.println(e + "  Probleme f listner  de tableview ");
+                }
+
+
+
+
+
+
+
+
+
             }
         });
 
+
+
+
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
 
