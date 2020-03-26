@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -120,6 +121,16 @@ public class ConfirmationChoix {
             System.out.println(e + "  Probleme f Confirmation de choix ");
         }
 
+
+
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Sujet affecté avec succés");
+
+        alert.showAndWait();
+        System.exit(0);
 
 
 
