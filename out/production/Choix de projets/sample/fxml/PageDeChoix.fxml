@@ -29,5 +29,10 @@
             <Font size="21.0" />
          </font>
       </Label>
+      <Label layoutX="103.0" layoutY="672.0" prefHeight="47.0" prefWidth="525.0" text="BEKKOUCHA DJAWED         ADSI">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

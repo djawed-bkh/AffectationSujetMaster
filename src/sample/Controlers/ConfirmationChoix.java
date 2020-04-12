@@ -11,14 +11,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+import java.util.Properties;
 public class ConfirmationChoix {
 
     @FXML
@@ -61,7 +65,6 @@ public class ConfirmationChoix {
 
 
 
-    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());            //format date
 
     @FXML
     void Valider(ActionEvent event) {
@@ -88,10 +91,12 @@ public class ConfirmationChoix {
 
 
 
-                String sqlQueryDES = " UPDATE Etudiant   SET SujetID=NULL , DateAttribution = NOW()  WHERE EtudiantID=?;";
+                String sqlQueryDES = " UPDATE Etudiant   SET SujetID=NULL , DateAttribution = NULL  WHERE EtudiantID=?;";
                 PreparedStatement prepStmtDES = con.prepareStatement(sqlQueryDES);
                 prepStmtDES.setInt(1,PageDeChoix.IdAutreEtudiant );
                 int rsDES = prepStmtDES.executeUpdate();
+                envoyerMailSMTP(PageDeChoix.MailAutreEtudiant);
+
 
 
             }else{                      // Affectation tout court
@@ -140,7 +145,32 @@ public class ConfirmationChoix {
 
     }
 
+     public void envoyerMailSMTP(String destinataire) {
+       final String senderEmail = "bekhouchadjawed@gmail.com";
+        final String password = "*****";                            // ici viens le mot de passe du mail
+        try {
+            Properties prop = new Properties();
+            prop.put("mail.smtp.host", "smtp.gmail.com");
+            prop.put("mail.smtp.port", "587");
+            prop.put("mail.smtp.auth", "true");
+            prop.put("mail.smtp.starttls.enable", "true");
+            Session session = Session.getInstance(prop,new javax.mail.Authenticator(){
+                protected PasswordAuthentication getPasswordAuthentication(){
+                    return new PasswordAuthentication(senderEmail,password);
+                }
+            });
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("bekhouchadjawed@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(destinataire));
+            message.setSubject("Sujet désafécté");
+            message.setText("Votre sujet viens détre désafécté veuillez en choisir un autre ");
+            Transport.send(message);
+        }
+        catch ( Exception  e) {
+            System.out.println(e);//MessagingException throw new RuntimeException(e);
+        }
 
+    }
 
 
 

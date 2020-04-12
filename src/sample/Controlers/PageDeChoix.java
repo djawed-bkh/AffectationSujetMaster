@@ -9,22 +9,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.Classes.Sujet;
 
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class PageDeChoix implements Initializable {
@@ -32,6 +27,7 @@ public class PageDeChoix implements Initializable {
 
     public static int NSujet;
     public static int IdAutreEtudiant;// id de l'étudiant dont on va desafecter le sujet
+    public static String MailAutreEtudiant;
     public static String Enoncer;
     public static String ProfEncadreur;
 
@@ -76,7 +72,13 @@ public class PageDeChoix implements Initializable {
 
 
         }else {
-                        // fenetre dialogue   after
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Sujet Indisponible, veuillez en choisir un autre !");
+
+            alert.showAndWait();
         }
 
 
@@ -157,7 +159,7 @@ public class PageDeChoix implements Initializable {
                             "jdbc:mysql://localhost:3306/webService", "root", "djawed");
 
 
-                    String sqlQuery = "SELECT Etudiant.MoyenneCursus,Etudiant.EtudiantID,Etudiant.MoyenneUF,Etudiant.DateAttribution from Etudiant where SujetID=?";
+                    String sqlQuery = "SELECT Etudiant.MoyenneCursus,Etudiant.EtudiantID,Etudiant.MoyenneUF,Etudiant.DateAttribution,Etudiant.email from Etudiant where SujetID=?";
                     PreparedStatement prepStmt = con.prepareStatement(sqlQuery);
                     prepStmt.setInt(1, NSujet);
                     ResultSet rs = prepStmt.executeQuery();
@@ -176,6 +178,7 @@ public class PageDeChoix implements Initializable {
 
                         else if (Controller.MoyenneCursus>rs.getFloat("MoyenneCursus")){    //  Moyenne cursus :permuter de destinataire
                                             IdAutreEtudiant=rs.getInt("Etudiant.EtudiantID");
+                                            MailAutreEtudiant=rs.getString("Etudiant.email");
                                             Disponibilite.setText("Disponible");
 
 
